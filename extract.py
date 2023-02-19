@@ -1,8 +1,9 @@
 import matplotlib.pyplot as plt
 import cv2
+import os
 import numpy as np
 #------ converting image to grayscale image 
-image=cv2.imread('img.jpg')
+image=cv2.imread('Five.jpg')
 gray=cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
 plt.imshow(gray,cmap="gray")
 plt.show()
@@ -30,6 +31,10 @@ plt.show()
 (cnt,heirachy)=cv2.findContours(dilated.copy(),cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_NONE)
 rgb=cv2.cvtColor(image,cv2.COLOR_BGR2RGB)
 cv2.drawContours(rgb,cnt,-1,(0,255),2)
+# Create a new directory to save the output images
+output_dir = 'output_images'
+if not os.path.exists(output_dir):
+    os.mkdir(output_dir)
 
 # Extract the contours
 for i, contour in enumerate(cnt):
@@ -40,4 +45,4 @@ for i, contour in enumerate(cnt):
     cropped_image = image[y:y+h, x:x+w]
     
     # Save the cropped image
-    cv2.imwrite('output_image_' + str(i) + '.jpg', cropped_image)
+    cv2.imwrite(os.path.join(output_dir, f'output_image_{i}.jpg'), cropped_image)
